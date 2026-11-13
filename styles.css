@@ -1,0 +1,268 @@
+/* Rebuilt from the Framer project "Right Squircle".
+   Layout: one dark canvas, a 690px-wide rhythm of two columns, lime accent for labels and links. */
+:root{
+  color-scheme:dark;
+  --canvas:#111210; --text:#f3f3ed; --muted:#a2a49b; --accent:#c3f85c; --line:#34362f;
+  --sans:"Switzer","Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --gothic:"Pirata One","UnifrakturCook","Old English Text MT",fantasy;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--canvas);color:var(--text);font-family:var(--sans);font-size:16px;-webkit-font-smoothing:antialiased;font-feature-settings:"kern","liga"}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3,p,ul{margin:0;padding:0}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.page{max-width:1200px;margin-inline:auto;padding-block:clamp(40px,9vw,72px) 40px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+@media (min-width:700px){.page{padding-left:max(48px,env(safe-area-inset-left,0px));padding-right:max(48px,env(safe-area-inset-right,0px))}}
+
+/* text styles, named as in Framer */
+.title{font-weight:500;font-size:clamp(30px,10.5vw,56px);line-height:1.08;letter-spacing:-.04em}
+.heading{font-weight:500;font-size:clamp(26px,5vw,32px);line-height:1.2;letter-spacing:-.01em}
+.body{font-weight:400;font-size:clamp(16px,4.4vw,18px);line-height:1.55;letter-spacing:-.01em;color:var(--muted)}
+.body p+p{margin-top:20px}
+.label{font-weight:500;font-size:12px;line-height:1.4;letter-spacing:-.01em;color:var(--muted)}
+.project{font-weight:500;font-size:clamp(19px,5.2vw,22px);line-height:1.3;letter-spacing:-.01em}
+.caps{text-transform:uppercase}
+.accent{color:var(--accent)}
+.light{color:var(--text)}
+.link{color:var(--accent)}
+.link:hover{text-decoration:underline}
+.gothic{font-family:var(--gothic);font-style:italic;font-weight:400;color:var(--accent);letter-spacing:0;font-size:1.06em}
+
+.nowrap{white-space:nowrap}
+.contact{display:flex;flex-wrap:wrap;align-items:center;gap:0 8px}
+.contact a{padding-block:8px;overflow-wrap:anywhere}
+.rule{border:0;border-top:1px solid var(--line);margin:0}
+
+/* two-column rows */
+.split{display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+@media (min-width:700px){.split{grid-template-columns:minmax(0,53fr) minmax(0,43fr);column-gap:4%}}
+
+/* home */
+.hero{margin-top:clamp(20px,4vw,36px);align-items:end}
+@media (min-width:700px){.hero{grid-template-columns:max-content minmax(0,1fr);column-gap:clamp(28px,6vw,96px)}.hero .body{max-width:34ch}}
+.hero .body{padding-bottom:10px}
+.faves{margin-top:clamp(48px,9vw,72px)}
+.cards{margin-top:24px;display:grid;grid-template-columns:minmax(0,1fr);gap:40px 23px;align-items:start}
+@media (min-width:700px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{display:grid;gap:8px;min-width:0}
+/* every home page cover uses one spec: 1064 x 600 (the Collingwood cover) */
+.card .cover{width:100%;aspect-ratio:1064/600;margin-bottom:8px;max-width:100%}
+.card img.cover{object-fit:cover;height:auto}
+.card .placeholder{border:1px solid var(--text);display:grid;place-content:center;justify-items:center;gap:6px;text-align:center;padding:16px}
+.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:2px 16px}
+.card-head .label{white-space:nowrap;padding-top:2px}
+a.card:hover .project{color:var(--accent)}
+.about{padding-block:clamp(36px,7vw,56px) clamp(40px,8vw,64px);margin-top:clamp(40px,7vw,56px);border-top:1px solid var(--line)}
+@media (min-width:700px){.about{grid-template-columns:minmax(0,45fr) minmax(0,51fr)}}
+.about .heading{margin-bottom:22px}
+.talk{border-top:1px solid var(--line);padding-top:40px;display:grid;gap:32px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px 24px}
+
+/* case study */
+.case-top{margin-top:-18px}
+.case-kicker{margin-top:clamp(36px,8vw,68px)}
+.case-title{margin-top:26px}
+.case-intro{margin-top:22px}
+@media (min-width:700px){.case-intro{grid-template-columns:minmax(0,47fr) minmax(0,43fr);column-gap:10%}}
+.feature{margin-top:clamp(28px,6vw,44px);border:1px solid var(--text);min-height:min(68vw,560px);display:grid;grid-template-rows:auto 1fr auto;padding:clamp(18px,4.5vw,32px);max-width:100%}
+.feature .heading{align-self:center;justify-self:center;text-align:center}
+.feature .label:last-child{justify-self:end}
+.direction{margin-top:clamp(44px,8vw,64px);display:grid;gap:24px}
+.direction .body{max-width:72ch}
+.shots{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(32px,8vw,64px) 23px}
+@media (min-width:700px){.shots{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.shots figure{margin:0;display:grid;gap:clamp(12px,3vw,24px);min-width:0}
+.shots .wide{grid-column:1/-1}
+.shots img,.shots video{width:100%}
+.shots video{display:block;height:auto;max-width:100%;aspect-ratio:932/524;object-fit:cover;background:#0b2446}
+.more{margin-top:clamp(56px,12vw,96px);display:grid;gap:18px}
+
+.more .link,.case-top .link{display:inline-block;padding-block:8px}
+@media (min-width:700px){.card-head{flex-wrap:nowrap}}
+
+/* hover: images breathe slowly while the cursor is over them */
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .card .cover,.shots img,.shots video,.mockup img{transform-origin:center;will-change:transform}
+  .breathing{animation:breathe 2.6s ease-in-out infinite}
+}
+
+/* links: the whole line is one underlined, clickable target */
+.link:hover,.link:focus-visible{text-decoration:underline;text-underline-offset:.2em}
+.link [data-flicker]{display:inline;text-decoration:inherit}
+
+/* wide image slot on a case study, before its artwork exists (same shape as the home covers) */
+.wide-placeholder{aspect-ratio:1064/600;max-width:100%;border:1px solid var(--text);display:grid;place-content:center;justify-items:center;gap:8px;text-align:center;padding:16px}
+
+/* case study rows: three-up, four-up, and a cut-out mockup */
+.shots+.shots{margin-top:clamp(32px,8vw,64px)}
+.shots.four{grid-template-columns:repeat(2,minmax(0,1fr));gap:23px}
+@media (min-width:700px){.shots.three{grid-template-columns:repeat(3,minmax(0,1fr))}.shots.four{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.mockup{margin:0;min-width:0}
+.mockup img{width:100%;max-width:864px;margin-inline:auto;filter:drop-shadow(0 0 1px rgba(243,243,237,.4)) drop-shadow(0 24px 48px rgba(0,0,0,.55))}
+
+/* program block: mockup on the left, covers stacked two by two on the right, both the same height */
+.program{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr);gap:23px;align-items:center}
+.program .shots{margin-top:0}
+@media (min-width:700px){
+  .program{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr)}
+  .program .shots.four{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+}
+
+/* five-up: three across, then two wider ones underneath */
+@media (min-width:700px){
+  .shots.five{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .shots.five>figure{grid-column:span 2}
+  .shots.five>figure:nth-child(n+4){grid-column:span 3}
+}
+
+
+/* ============================ MOTION LAYER ============================
+   Everything below is movement only. Nothing is hidden unless site.js has
+   switched motion on (html.motion), so the pages read fine without it and
+   for visitors who ask for reduced motion. */
+:root{--ease:cubic-bezier(.16,.84,.24,1)}
+html,body{overflow-x:clip}
+
+/* film grain */
+.grain{position:fixed;inset:-100px;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-size:256px 256px}
+html.motion .grain{animation:grain .8s steps(5) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-34px,22px)}40%{transform:translate(26px,-40px)}60%{transform:translate(-18px,36px)}80%{transform:translate(40px,12px)}100%{transform:translate(0,0)}}
+
+/* headline: each line rises out of a mask on load */
+.title .line{display:block;overflow:hidden;padding-bottom:.16em;margin-bottom:-.16em}
+.title .line>span{display:inline-block}
+html.motion .title .line>span{transform:translateY(112%);animation:rise 1.1s var(--ease) forwards;animation-delay:calc(120ms + var(--i,0)*110ms)}
+@keyframes rise{to{transform:none}}
+
+/* fade-up, image wipe, rule draw: all triggered when the element scrolls into view */
+html.motion [data-m="up"]{opacity:0;transform:translateY(16px);transition:opacity .9s var(--ease) var(--d,0ms),transform .9s var(--ease) var(--d,0ms)}
+html.motion [data-m="up"].in{opacity:1;transform:none}
+html.motion [data-m="wipe"]>img,html.motion [data-m="wipe"]>video,html.motion [data-m="wipe"]>.cover{clip-path:inset(0 0 100% 0);transition:clip-path 1.15s var(--ease) var(--d,0ms)}
+html.motion [data-m="wipe"].in>img,html.motion [data-m="wipe"].in>video,html.motion [data-m="wipe"].in>.cover{clip-path:inset(0 0 0 0)}
+html.motion [data-m="draw"]{border-top-color:transparent;position:relative}
+html.motion [data-m="draw"]::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--line);transform:scaleX(0);transform-origin:left;transition:transform 1.3s var(--ease)}
+html.motion [data-m="draw"].in::before{transform:scaleX(1)}
+
+/* about text lights up word by word as you scroll through it */
+html.motion .about .body .w{opacity:.28;transition:opacity .35s linear}
+html.motion .about .body .w.lit{opacity:1}
+
+/* blackletter ticker between sections */
+.ticker{width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(56px,10vw,96px);overflow:hidden;white-space:nowrap;user-select:none;border-block:1px solid var(--line);padding-block:clamp(7px,1vw,11px)}
+.ticker-track{display:inline-flex;align-items:center;gap:clamp(14px,2vw,26px);padding-right:clamp(14px,2vw,26px);font-size:clamp(17px,2.4vw,28px);line-height:1.2;font-weight:500;letter-spacing:-.02em;color:var(--line);will-change:transform}
+.ticker-track .g{font-family:var(--gothic);font-style:italic;font-weight:400;letter-spacing:0;color:transparent;-webkit-text-stroke:.7px var(--muted);font-size:1.12em}
+.ticker-track i{font-style:normal;font-size:.5em;color:var(--accent);opacity:.7}
+.ticker-track{animation:ticker 120s linear infinite}
+@media (prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+@keyframes ticker{to{transform:translateX(-50%)}}
+.ticker+.about{margin-top:0;border-top:0}
+html.motion .ticker+.about[data-m="draw"]::before{display:none}
+
+/* hover: the project number stutters like a failing light */
+@media (hover:hover){
+  a.card:hover .card-head .label{color:var(--accent);animation:stutter .5s steps(1) 1}
+}
+@keyframes stutter{0%{opacity:1}12%{opacity:.15}24%{opacity:1}40%{opacity:.3}52%{opacity:1}70%{opacity:.5}82%{opacity:1}}
+[data-flicker]{display:inline}
+
+/* page change: a short dip to black, then back */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vt-out .22s ease both}
+::view-transition-new(root){animation:vt-in .5s ease both}
+@keyframes vt-out{to{opacity:0}}
+@keyframes vt-in{0%{opacity:0}35%{opacity:.75}45%{opacity:.35}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}
+
+
+/* ============================ GLITCH WORD ============================
+   Hovering "Different." makes it tear through a set of blackletter and
+   broken display faces. site.js drives the timing and the random values. */
+:root{--glitch-a:#ff2d4f;--glitch-b:#39e6ff}
+[data-glitch]{position:relative}
+.glitch-live.glitching{text-shadow:var(--gx,3px) 0 var(--glitch-a),calc(var(--gx,3px) * -1) 0 var(--glitch-b);transform:translate(var(--jx,0px),var(--jy,0px)) skewX(var(--sk,0deg))}
+.glitch-live.glitching::before,.glitch-live.glitching::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;text-shadow:none;pointer-events:none}
+.glitch-live.glitching::before{color:var(--text);clip-path:inset(var(--c1,12%) 0 var(--c2,62%) 0);transform:translateX(var(--sx,9px))}
+.glitch-live.glitching::after{color:var(--glitch-b);clip-path:inset(var(--c3,58%) 0 var(--c4,14%) 0);transform:translateX(calc(var(--sx,9px) * -1.4))}
+/* the cursor becomes a ring: a lens that drains the colour from whatever is under it, so lime type reads white */
+.orb{position:fixed;left:0;top:0;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;border:1px solid var(--text);background:rgba(243,243,237,.05);-webkit-backdrop-filter:grayscale(1) brightness(1.4) contrast(1.05);backdrop-filter:grayscale(1) brightness(1.4) contrast(1.05);pointer-events:none;z-index:70;transform:translate(-200px,-200px) scale(0);will-change:transform;display:grid;place-items:center;font-family:var(--gothic);font-style:italic;font-weight:400;font-size:19px;line-height:1;letter-spacing:0;color:#fff}
+.orb.big{width:67px;height:67px;margin:-33.5px 0 0 -33.5px;background:rgba(17,18,16,.4)}
+
+/* the four glitch typefaces. Each file holds only the letters of "Different." */
+@font-face{font-family:"Aresink";src:url("fonts/aresink.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Blackville";src:url("fonts/blackville.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Break Gothic";src:url("fonts/break-gothic.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Gothic Horror";src:url("fonts/gothic-horror.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Gloomy Horror";src:url("fonts/gloomy-horror.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Infolk";src:url("fonts/infolk.woff2") format("woff2");font-display:swap}
+
+
+/* feature box holding a logo lockup instead of placeholder text */
+.feature .lockup{margin:0;align-self:center;justify-self:center;width:min(100%,640px)}
+.feature .lockup img{width:100%;height:auto}
+.feature.rainbow{border-color:transparent;color:#fff;background:
+  radial-gradient(55% 75% at 0% 0%,#fb9ad8 0%,rgba(251,154,216,0) 70%),
+  radial-gradient(50% 70% at 100% 0%,#13edb7 0%,rgba(19,237,183,0) 70%),
+  radial-gradient(55% 75% at 0% 100%,#a7fa41 0%,rgba(167,250,65,0) 70%),
+  radial-gradient(55% 75% at 100% 100%,#fa7778 0%,rgba(250,119,120,0) 70%),
+  linear-gradient(115deg,#bc53ad 0%,#732ecc 35%,#1e61e9 62%,#09c7f4 100%)}
+.feature.rainbow .label,.feature.rainbow .accent{color:#fff}
+
+/* NPL: brand-blue feature box, logo sits in its own blue panel */
+.feature.npl{background:#0d4f97;border-color:transparent;color:#fff}
+.feature.npl .label{color:#fff}
+.feature.npl .lockup{width:min(100%,560px)}
+.mockup.passes{margin:28px 0 0}
+.mockup.passes img{max-width:760px}
+/* photography grid: stays three across even on phones so the section stays compact */
+.shots.photos{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,2vw,23px)}
+.shots.photos+.shots.photos{margin-top:clamp(8px,2vw,23px)}
+
+/* ---------- UX case study ---------- */
+.ux-cols,.ux-style{margin-top:clamp(44px,8vw,64px);display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+.ux-cols>div,.ux-style>div{display:grid;gap:16px;align-content:start;min-width:0}
+@media (min-width:700px){.ux-cols,.ux-style{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:4%}}
+.pains{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:0;border-top:1px solid var(--line)}
+.pains li{display:grid;gap:8px;padding:20px 0;border-bottom:1px solid var(--line);min-width:0}
+.pains .label:last-child{color:var(--muted);max-width:36ch}
+@media (min-width:700px){.pains{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:4%}}
+@media (min-width:1000px){.pains{grid-template-columns:repeat(4,minmax(0,1fr));column-gap:23px}}
+.persona{margin-top:clamp(44px,8vw,64px);display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding:clamp(20px,4vw,32px);border:1px solid var(--line)}
+.persona-head{display:grid;gap:20px;align-content:start;min-width:0}
+.persona-lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-content:start}
+.persona-lists ul{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:10px;color:var(--muted)}
+.persona-lists li::before{content:"— ";color:var(--accent)}
+@media (min-width:800px){.persona{grid-template-columns:minmax(0,53fr) minmax(0,43fr);column-gap:4%}}
+.fixes{margin:28px 0 0;padding:0;list-style:none;display:grid;gap:14px;counter-reset:fix;max-width:72ch}
+.fixes li{display:grid;grid-template-columns:3ch minmax(0,1fr);gap:12px;counter-increment:fix}
+.fixes li::before{content:counter(fix,decimal-leading-zero);color:var(--accent);font-size:12px;padding-top:.45em}
+.palette{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.swatch{background:var(--sw);color:#111210;min-height:128px;padding:14px;display:flex;flex-direction:column;justify-content:space-between}
+
+/* wireframe with a lens that shows the final design */
+.lens{position:relative;margin:28px 0 0;max-width:100%;overflow:hidden;touch-action:pan-y;-webkit-user-select:none;user-select:none}
+.lens img{display:block;width:100%;height:auto;pointer-events:none}
+.lens-top{position:absolute;inset:0;clip-path:circle(0px at 50% 50%)}
+.lens-ring{position:absolute;left:0;top:0;border:1px solid var(--accent);border-radius:50%;pointer-events:none;opacity:0;box-shadow:0 0 0 1px rgba(0,0,0,.25),0 20px 60px rgba(0,0,0,.45)}
+@media (hover:hover) and (pointer:fine){.lens{cursor:none}.hint-touch{display:none}}
+@media not ((hover:hover) and (pointer:fine)){.hint-mouse{display:none}.lens{cursor:pointer}}
+
+/* monitor mockup with the site scrolling inside */
+.monitor{margin:28px auto 0;max-width:1000px;display:grid;justify-items:center;gap:0}
+.monitor-body{width:100%;padding:clamp(6px,1.4vw,14px);padding-bottom:clamp(18px,3.6vw,36px);background:linear-gradient(#2a2c28,#1a1b19);border-radius:clamp(8px,1.4vw,16px);box-shadow:0 0 0 1px #3a3c36,0 40px 80px rgba(0,0,0,.55)}
+.monitor-screen{aspect-ratio:16/10;max-width:100%;overflow-y:auto;overflow-x:hidden;background:#f0f0f0;border-radius:3px;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#3bd6ff transparent;-webkit-overflow-scrolling:touch}
+.monitor-screen img{display:block;width:100%;height:auto}
+.monitor-screen:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.monitor-stand{width:18%;height:clamp(28px,6vw,64px);background:linear-gradient(90deg,#1c1d1b,#33352f 50%,#1c1d1b);clip-path:polygon(18% 0,82% 0,92% 100%,8% 100%)}
+.monitor-base{width:34%;height:clamp(5px,1vw,9px);border-radius:3px 3px 8px 8px;background:linear-gradient(#3a3c36,#1c1d1b)}
+.monitor figcaption{margin-top:16px;color:var(--muted)}
+
+/* framed posters hanging on a softly lit wall */
+.frames{margin:28px 0 0;display:grid;grid-template-columns:minmax(0,706fr) minmax(0,671fr);gap:clamp(14px,5vw,72px);align-items:center;padding:clamp(8px,3vw,40px) clamp(0px,6vw,96px)}
+.frame{padding:clamp(4px,.9vw,11px);background:linear-gradient(150deg,#3a3a37 0%,#0c0c0b 22%,#161615 70%,#2a2a27 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 34px 60px rgba(0,0,0,.65),0 10px 18px rgba(0,0,0,.5);min-width:0}
+.frame-mat{background:#f3f1ea;padding:clamp(7px,2.4vw,30px);box-shadow:inset 0 2px 6px rgba(0,0,0,.35)}
+.frame-mat img{display:block;width:100%;height:auto;box-shadow:0 0 0 1px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.25)}
+.shots.grid2{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,3vw,23px)}
