@@ -84,7 +84,7 @@
   $$(".shots figure").forEach(function (f) { if (!f.querySelector(".wide-placeholder")) f.setAttribute("data-m", "wipe"); });
   mark(".about, .talk", "draw");
   mark(".page > .contact, .hero .body, .faves > h2, .card-head, .card > .label, .about h2, .about .heading, .talk .heading, .foot, " +
-       ".case-top, .case-kicker, .case-intro > *, .feature, .feature-media, .direction > *, .more > *, .wide-placeholder, .mockup, .ticker, .ux-cols > *, .ux-style > *, .pains > li, .persona, .fixes > li, .lens, .monitor, .frame, .email", "up");
+       ".case-top, .case-kicker, .case-intro > *, .feature, .feature-media, .direction > *, .more > *, .wide-placeholder, .mockup, .ticker, .ux-cols > *, .ux-style > *, .pains > li, .persona, .fixes > li, .lens, .monitor, .frame, .email, .guide > figure", "up");
 
   /* about text: wrap each word so it can light up */
   var words = [];
