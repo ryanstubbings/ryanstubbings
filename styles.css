@@ -300,3 +300,7 @@ html.motion .ticker+.about[data-m="draw"]::before{display:none}
 @media (hover:hover) and (pointer:fine){.edm-hint-touch{display:none}}
 @media not ((hover:hover) and (pointer:fine)){.edm-hint-mouse{display:none}}
 @media (prefers-reduced-motion:reduce){.email,.edm-pop,.edm-frame{transition:none}}
+
+/* four outdoor posters: one row on desktop, 2x2 on phones */
+.shots.posters4{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,2vw,16px)}
+@media (min-width:760px){.shots.posters4{grid-template-columns:repeat(4,minmax(0,1fr))}}
