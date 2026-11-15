@@ -46,7 +46,7 @@
 
   /* ---------- 2. Breathing hover on images ---------- */
   if (canHover && !reduced) {
-    $$(".card .cover, .shots img, .shots video, .mockup img").forEach(function (img) {
+    $$(".card .cover:not(video), .shots img, .shots video, .mockup img").forEach(function (img) {
       var host = img.closest(".card") || img, over = false;
       host.addEventListener("pointerenter", function () { over = true; img.classList.add("breathing"); });
       host.addEventListener("pointerleave", function () { over = false; });
