@@ -271,3 +271,32 @@ html.motion .ticker+.about[data-m="draw"]::before{display:none}
 .card video.cover{display:block;object-fit:cover;height:auto;background:#000}
 .feature-media{margin:clamp(28px,6vw,44px) 0 0;max-width:100%}
 .feature-media video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#000}
+
+/* EDMs shown as email-client windows; hover (or tap) pops the full design out */
+.emails{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(16px,3vw,28px)}
+@media (min-width:760px){.emails{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.email{margin:0;min-width:0;background:#f4f4f1;color:#1c1d1b;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px #2a2c27,0 24px 48px rgba(0,0,0,.45);cursor:zoom-in;transition:transform .5s var(--ease),box-shadow .5s var(--ease);outline:none}
+.email:hover,.email:focus-visible{transform:translateY(-6px);box-shadow:0 0 0 1px var(--accent),0 34px 60px rgba(0,0,0,.55)}
+.email-bar{display:flex;gap:6px;padding:10px 12px;background:#e4e4df}
+.email-bar span{width:10px;height:10px;border-radius:50%;background:#c9c9c3}
+.email-bar span:first-child{background:#ff5f57}.email-bar span:nth-child(2){background:#febc2e}.email-bar span:nth-child(3){background:#28c840}
+.email-head{padding:14px 16px 12px;border-bottom:1px solid #dcdcd6;display:grid;gap:8px}
+.email-head p{margin:0}
+.email-from{display:flex;gap:10px;align-items:center;font-size:12px;line-height:1.3}
+.email-to{color:#7a7b74}
+.email-avatar{flex:none;width:30px;height:30px;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font-weight:500;font-size:13px}
+.email-subject{font-size:15px;font-weight:500;line-height:1.3;letter-spacing:-.01em;text-wrap:balance}
+.email-pre{font-size:12px;color:#7a7b74;line-height:1.4}
+.email-body{background:#e9e9e4;padding:14px 14px 0;aspect-ratio:4/5;overflow:hidden;position:relative}
+.email-body::after{content:"";position:absolute;inset:auto 0 0;height:22%;background:linear-gradient(transparent,#e9e9e4);pointer-events:none}
+.email-body img{display:block;width:100%;height:auto;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.edm-pop{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:max(16px,4vh) max(16px,env(safe-area-inset-right,0px)) max(16px,4vh) max(16px,env(safe-area-inset-left,0px));background:rgba(8,8,7,.72);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s var(--ease),visibility 0s linear .35s}
+.edm-pop.on{opacity:1;visibility:visible;transition:opacity .35s var(--ease)}
+.edm-frame{width:min(560px,100%);max-height:92vh;overflow:hidden;border-radius:8px;box-shadow:0 40px 90px rgba(0,0,0,.7);background:#111;transform:scale(.94);transition:transform .45s var(--ease)}
+.edm-pop.on .edm-frame{transform:scale(1)}
+.edm-frame img{display:block;width:100%;height:auto;will-change:transform}
+.edm-pop.touch{pointer-events:auto;cursor:zoom-out}
+.edm-pop.touch .edm-frame{overflow-y:auto;overscroll-behavior:contain}
+@media (hover:hover) and (pointer:fine){.edm-hint-touch{display:none}}
+@media not ((hover:hover) and (pointer:fine)){.edm-hint-mouse{display:none}}
+@media (prefers-reduced-motion:reduce){.email,.edm-pop,.edm-frame{transition:none}}

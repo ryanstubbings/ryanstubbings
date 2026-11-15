@@ -84,7 +84,7 @@
   $$(".shots figure").forEach(function (f) { if (!f.querySelector(".wide-placeholder")) f.setAttribute("data-m", "wipe"); });
   mark(".about, .talk", "draw");
   mark(".page > .contact, .hero .body, .faves > h2, .card-head, .card > .label, .about h2, .about .heading, .talk .heading, .foot, " +
-       ".case-top, .case-kicker, .case-intro > *, .feature, .feature-media, .direction > *, .more > *, .wide-placeholder, .mockup, .ticker, .ux-cols > *, .ux-style > *, .pains > li, .persona, .fixes > li, .lens, .monitor, .frame", "up");
+       ".case-top, .case-kicker, .case-intro > *, .feature, .feature-media, .direction > *, .more > *, .wide-placeholder, .mockup, .ticker, .ux-cols > *, .ux-style > *, .pains > li, .persona, .fixes > li, .lens, .monitor, .frame, .email", "up");
 
   /* about text: wrap each word so it can light up */
   var words = [];
@@ -330,4 +330,46 @@
       });
     }
   });
+})();
+
+/* EDM pop-out: hovering an email shows the whole design large; moving the cursor down the
+   email scrolls through it. On touch screens a tap opens it (scrollable) and a tap closes it. */
+(function () {
+  var mails = document.querySelectorAll(".email[data-edm]");
+  if (!mails.length) return;
+  var fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var pop = document.createElement("div"); pop.className = "edm-pop"; pop.setAttribute("aria-hidden", "true");
+  pop.innerHTML = '<div class="edm-frame"><img alt=""></div>';
+  document.body.appendChild(pop);
+  var frame = pop.firstChild, img = frame.firstChild, cur = null, ty = 0, target = 0, raf = 0;
+  function open(m) {
+    cur = m; img.src = m.dataset.edm; img.alt = (m.querySelector(".email-body img") || {}).alt || "";
+    var w = +m.dataset.w, h = +m.dataset.h;
+    img.width = w; img.height = h; ty = target = 0; img.style.transform = "";
+    frame.scrollTop = 0; pop.classList.add("on");
+  }
+  function close() { cur = null; pop.classList.remove("on"); }
+  function tick() {
+    ty += (target - ty) * 0.18; img.style.transform = "translateY(" + (-ty).toFixed(1) + "px)";
+    raf = Math.abs(target - ty) > 0.5 ? requestAnimationFrame(tick) : 0;
+  }
+  function follow(e, m) {
+    var b = m.getBoundingClientRect(), f = Math.min(1, Math.max(0, (e.clientY - b.top) / b.height));
+    var extra = Math.max(0, img.getBoundingClientRect().height - frame.clientHeight);
+    target = extra * f; if (!raf) raf = requestAnimationFrame(tick);
+  }
+  mails.forEach(function (m) {
+    if (fine) {
+      m.addEventListener("pointerenter", function (e) { open(m); follow(e, m); });
+      m.addEventListener("pointermove", function (e) { if (cur === m) follow(e, m); });
+      m.addEventListener("pointerleave", close);
+      m.addEventListener("focus", function () { open(m); });
+      m.addEventListener("blur", close);
+    } else {
+      m.addEventListener("click", function () { pop.classList.add("touch"); open(m); });
+    }
+  });
+  pop.addEventListener("click", function () { if (!fine) close(); });
+  addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+  addEventListener("scroll", function () { if (fine && cur) close(); }, { passive: true });
 })();
