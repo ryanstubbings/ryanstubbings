@@ -332,44 +332,37 @@
   });
 })();
 
-/* EDM pop-out: hovering an email shows the whole design large; moving the cursor down the
-   email scrolls through it. On touch screens a tap opens it (scrollable) and a tap closes it. */
+/* EDM pop-out: hovering an email shows the whole design, fitted to the screen, over a dimmed page.
+   On touch screens a tap opens it and a tap closes it. */
 (function () {
   var mails = document.querySelectorAll(".email[data-edm]");
   if (!mails.length) return;
   var fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
   var pop = document.createElement("div"); pop.className = "edm-pop"; pop.setAttribute("aria-hidden", "true");
-  pop.innerHTML = '<div class="edm-frame"><img alt=""></div>';
+  pop.innerHTML = '<img class="edm-full" alt="">';
   document.body.appendChild(pop);
-  var frame = pop.firstChild, img = frame.firstChild, cur = null, ty = 0, target = 0, raf = 0;
-  function open(m) {
-    cur = m; img.src = m.dataset.edm; img.alt = (m.querySelector(".email-body img") || {}).alt || "";
-    var w = +m.dataset.w, h = +m.dataset.h;
-    img.width = w; img.height = h; ty = target = 0; img.style.transform = "";
-    frame.scrollTop = 0; pop.classList.add("on");
+  var img = pop.firstChild, cur = null, closeT = 0, openT = 0;
+  mails.forEach(function (m) { var pre = new Image(); pre.src = m.dataset.edm; });   // preload so the pop-out never waits
+  function show(m) {
+    clearTimeout(closeT);
+    if (cur === m) return;
+    cur = m; img.src = m.dataset.edm; img.width = +m.dataset.w; img.height = +m.dataset.h;
+    img.alt = (m.querySelector(".email-body img") || {}).alt || "";
+    pop.classList.add("on");
   }
-  function close() { cur = null; pop.classList.remove("on"); }
-  function tick() {
-    ty += (target - ty) * 0.18; img.style.transform = "translateY(" + (-ty).toFixed(1) + "px)";
-    raf = Math.abs(target - ty) > 0.5 ? requestAnimationFrame(tick) : 0;
-  }
-  function follow(e, m) {
-    var b = m.getBoundingClientRect(), f = Math.min(1, Math.max(0, (e.clientY - b.top) / b.height));
-    var extra = Math.max(0, img.getBoundingClientRect().height - frame.clientHeight);
-    target = extra * f; if (!raf) raf = requestAnimationFrame(tick);
-  }
+  function open(m) { clearTimeout(openT); clearTimeout(closeT); openT = setTimeout(function () { show(m); }, cur ? 0 : 90); }
+  function close() { clearTimeout(openT); clearTimeout(closeT); closeT = setTimeout(function () { cur = null; pop.classList.remove("on"); }, 140); }
   mails.forEach(function (m) {
     if (fine) {
-      m.addEventListener("pointerenter", function (e) { open(m); follow(e, m); });
-      m.addEventListener("pointermove", function (e) { if (cur === m) follow(e, m); });
+      m.addEventListener("pointerenter", function () { open(m); });
       m.addEventListener("pointerleave", close);
       m.addEventListener("focus", function () { open(m); });
       m.addEventListener("blur", close);
     } else {
-      m.addEventListener("click", function () { pop.classList.add("touch"); open(m); });
+      m.addEventListener("click", function () { pop.classList.add("touch"); show(m); });
     }
   });
-  pop.addEventListener("click", function () { if (!fine) close(); });
-  addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+  pop.addEventListener("click", function () { if (!fine) { cur = null; pop.classList.remove("on"); } });
+  addEventListener("keydown", function (e) { if (e.key === "Escape") { cur = null; pop.classList.remove("on"); } });
   addEventListener("scroll", function () { if (fine && cur) close(); }, { passive: true });
 })();
