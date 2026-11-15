@@ -273,8 +273,9 @@ html.motion .ticker+.about[data-m="draw"]::before{display:none}
 .feature-media video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#000}
 
 /* EDMs shown as email-client windows; hover (or tap) pops the full design out */
-.emails{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(16px,3vw,28px)}
-@media (min-width:760px){.emails{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.emails{margin-top:28px;display:grid;align-items:start;grid-template-columns:minmax(0,1fr);gap:clamp(16px,3vw,28px)}
+@media (min-width:640px){.emails{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1040px){.emails{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .email{margin:0;min-width:0;background:#f4f4f1;color:#1c1d1b;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px #2a2c27,0 24px 48px rgba(0,0,0,.45);cursor:zoom-in;transition:transform .5s var(--ease),box-shadow .5s var(--ease);outline:none}
 .email:hover,.email:focus-visible{transform:translateY(-6px);box-shadow:0 0 0 1px var(--accent),0 34px 60px rgba(0,0,0,.55)}
 .email-bar{display:flex;gap:6px;padding:10px 12px;background:#e4e4df}
