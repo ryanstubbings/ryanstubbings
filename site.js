@@ -366,3 +366,95 @@
   addEventListener("keydown", function (e) { if (e.key === "Escape") { cur = null; pop.classList.remove("on"); } });
   addEventListener("scroll", function () { if (fine && cur) close(); }, { passive: true });
 })();
+
+/* Music player: a small floating pill on every page. The track streams through SoundCloud's
+   official widget (hidden), driven by our own play/pause, mute and volume controls.
+   It remembers play state, position and volume between pages for this visit. */
+(function () {
+  var TRACK = "https://soundcloud.com/haakon/clikrads-romeo-menu-theme";
+  var KEY = "rs-music";
+  var st = { playing: false, pos: 0, vol: 60, muted: false };
+  try { var saved = JSON.parse(sessionStorage.getItem(KEY) || "null"); if (saved) st = Object.assign(st, saved); } catch (e) {}
+  function save() { try { sessionStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+
+  var fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var box = document.createElement("div");
+  box.className = "music"; box.setAttribute("role", "region"); box.setAttribute("aria-label", "Music player");
+  box.innerHTML =
+    '<button class="music-play" type="button" aria-label="Play music" aria-pressed="false">' +
+      '<svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>' +
+      '<svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>' +
+    '</button>' +
+    '<span class="music-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' +
+    '<span class="music-meta"><span class="music-title">Romeo Menu Theme</span><span class="music-artist">Haakon</span></span>' +
+    '<button class="music-mute" type="button" aria-label="Mute">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/>' +
+      '<path class="wave" d="M15 9a4.5 4.5 0 0 1 0 6M17.6 6.6a8 8 0 0 1 0 10.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>' +
+      '<path class="x" d="M15.5 9.5l5 5M20.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>' +
+    '</button>' +
+    '<input class="music-vol" type="range" min="0" max="100" step="1" aria-label="Volume">';
+  document.body.appendChild(box);
+
+  var playBtn = box.querySelector(".music-play"), muteBtn = box.querySelector(".music-mute"), vol = box.querySelector(".music-vol");
+  var title = box.querySelector(".music-title"), artist = box.querySelector(".music-artist");
+  vol.value = st.vol;
+
+  var frame = document.createElement("iframe");
+  frame.className = "music-frame"; frame.title = "SoundCloud player"; frame.setAttribute("allow", "autoplay; encrypted-media");
+  frame.setAttribute("aria-hidden", "true"); frame.tabIndex = -1;
+  frame.src = "https://w.soundcloud.com/player/?url=" + encodeURIComponent(TRACK) +
+    "&auto_play=false&visual=false&show_artwork=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&buying=false&sharing=false&download=false&hide_related=true";
+  document.body.appendChild(frame);
+
+  var w = null, ready = false, wanted = false;
+  function ui(on) {
+    box.classList.toggle("on", on);
+    playBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    playBtn.setAttribute("aria-label", on ? "Pause music" : "Play music");
+  }
+  function applyVol() {
+    var v = st.muted ? 0 : +st.vol;
+    box.classList.toggle("muted", st.muted || +st.vol === 0);
+    muteBtn.setAttribute("aria-label", st.muted ? "Unmute" : "Mute");
+    vol.style.setProperty("--v", (st.muted ? 0 : st.vol) + "%");
+    if (ready) w.setVolume(v);
+  }
+  applyVol();
+
+  playBtn.addEventListener("click", function () {
+    wanted = !box.classList.contains("on");
+    st.playing = wanted; save(); ui(wanted);
+    if (ready) { wanted ? w.play() : w.pause(); } else box.classList.add("loading");
+  });
+  muteBtn.addEventListener("click", function () {
+    if (+st.vol === 0) { st.vol = 60; vol.value = 60; st.muted = false; } else st.muted = !st.muted;
+    save(); applyVol();
+  });
+  vol.addEventListener("input", function () { st.vol = +vol.value; st.muted = false; save(); applyVol(); });
+
+  var s = document.createElement("script");
+  s.src = "https://w.soundcloud.com/player/api.js"; s.async = true;
+  s.onload = function () {
+    if (!window.SC || !SC.Widget) return;
+    w = SC.Widget(frame);
+    var E = SC.Widget.Events;
+    w.bind(E.READY, function () {
+      ready = true; box.classList.remove("loading"); box.classList.add("ready"); applyVol();
+      w.getCurrentSound(function (snd) {
+        if (!snd) return;
+        if (snd.title) title.textContent = snd.title;
+        if (snd.user && snd.user.username) artist.textContent = snd.user.username;
+      });
+      if (st.pos) w.seekTo(st.pos);
+      if (st.playing || wanted) w.play();
+    });
+    w.bind(E.PLAY, function () { ui(true); st.playing = true; save(); });
+    w.bind(E.PAUSE, function () { ui(false); });
+    w.bind(E.PLAY_PROGRESS, function (e) { st.pos = Math.floor(e.currentPosition); });
+    w.bind(E.FINISH, function () { st.pos = 0; w.seekTo(0); w.play(); });   // loop
+  };
+  s.onerror = function () { box.classList.add("unavailable"); };
+  document.head.appendChild(s);
+  addEventListener("pagehide", save);
+  if (!fine) box.classList.add("touch");
+})();
